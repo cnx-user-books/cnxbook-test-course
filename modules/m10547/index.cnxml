@@ -1,0 +1,578 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Connexions: MathML and Collaborative Curriculum Development in Engineering</title>
+  <metadata>
+  <md:content-id>m10547</md:content-id><md:title>Connexions: MathML and Collaborative Curriculum Development in Engineering</md:title>
+  <md:abstract>The Connexions Project uses a collaborative, community-driven approach to content creation, organization, and dissemination. We provide a set of open source tools and an open repository for the publication and exchange of knowledge modules.  These XML-based modules allow instructors to compose customized courses, providing students with new opportunities to explore the connections between different ideas and domains.</md:abstract>
+  <md:uuid>a7842bc9-ac84-48ef-af70-80b216ce7e5f</md:uuid>
+</metadata>
+
+
+  <content>
+    <section id="introduction">
+      <title>Introduction</title>
+      <para id="para0"><link url="http://cnx.rice.edu/">The Connexions
+	Project</link><link target-id="ref-thesis"/> is a
+	community-driven collaborative knowledge creation and
+	dissemination project at Rice University.  Many different
+	authors contribute small nuggets of information that we call
+	<term>knowledge modules</term> to a repository.  Each module
+	covers a narrowly defined topic and is crosslinked to other
+	modules, forming a sea of knowledge.  Course instructors
+	access this repository to construct a touring itinerary for
+	their classes to follow, adding in their own content as well.
+	Students use standard browsers to navigate through their
+	instructor's course as well as the modules that crosslink to
+	it, helping them visualize the relationships between concepts
+	throughout the curriculum.
+      </para>
+      <para id="para1">
+	A team of faculty, staff, and students has been developing and
+	using Connexions since 1999 to great success.  Over six
+	hundred modules now form the basis for six undergraduate
+	courses at Rice and the University of Illinois, spanning the
+	departments of electrical and computer engineering, computer
+	science, and applied mathematics.  Faculty members at other
+	institutions worldwide (including University of Michigan, Ohio
+	State University, Georgia Institute of Technology, Polytechnic
+	University, Ecole Normale Supérieure in France, Ecole
+	Polytechnique Fédéral de Lausanne in
+	Switzerland, and Stavanger College in Norway) are forming
+	author and instructor communities to develop thousands more
+	modules.
+      </para>
+    </section>
+    <section id="modules-n-openness">
+      <title>Connexions Philosophy</title>
+      <para id="cnxbene">
+	The two key ideas behind the Connexions approach are the
+	modularization of the content, and the open licensing
+	of both the software and the content.  These provide a number
+	of benefits for authors, instructors and students.
+      </para>
+      <para id="authorbene">
+	Modularity reduces the barrier to entry for authorship.
+	Rather than committing three to five years to write a
+	traditional textbook, authors may write individual, focused
+	modules within their areas of interest, and publish them
+	through the repository. This drops their time commitment from
+	years down to perhaps only a few evenings. The open, public
+	nature of the repository then allows for the rapid, iterative,
+	collaborative improvement of their contribution, combining it
+	with writings by other members of the Connexions community to
+	generate larger bodies of work.
+      </para>
+      <para id="instructorbene">
+	Once the repository has achieved a "critical mass" of modules
+	in a particular topic area, instructors can assemble courses
+	that follow their own particular didactic and pedagogical
+	approach, adapting the text to their course, rather than
+	the converse. The open
+	licensing of the content allows instructors to combine
+	existing modules with their ideas, rather than duplicate
+	existing work. Note that the existence of the large body of
+	modules allows the instructor to designate alternative
+	approaches to key concepts in a straightforward way, as well
+	as providing simple access to supplementary enrichment or
+	prerequisite materials.
+      </para>
+      <para id="studentbene">
+	The repository includes modules and courses that intersect
+	with the student's current course. Since these cross-course
+	and cross-curriculum linkages are directly accessible to
+	students, they can gain an increased understanding of the
+	non-linear interconnectedness of various subjects. With
+	traditional materials, students often do not gain this kind of
+	integrated knowledge until late in their undergraduate career,
+	or even later, in post-graduate studies or on the job.
+      </para>
+    </section>
+    <section id="implementation">
+      <title>Implementation</title>
+      <para id="imp_overview">
+	At the heart of the Connexions System are the modules stored
+	in our central repository.  The repository stores the modules'
+	text in the Concurrent Versions System (CVS)<link target-id="ref-cvs" strength="3"/>, a version control software
+	package that provides revision history and allows for
+	concurrent editing.  A relational database (specifically,
+	PostgreSQL<link target-id="ref-postgresql" strength="3"/>)
+	houses the metadata associated with each module for easy
+	search and retrieval.  Each of our three user communities
+	interacts with the repository via specialized tools as
+	depicted in <link target-id="figure1" strength="1"/>.  The
+	author community generates high-quality content modules and
+	makes them available by submitting them to the repository.
+	Members of the instructor community weave these modules
+	together into customized courses and place them in the
+	repository or an independent course server.  Students then use
+	the provided course paths as they navigate the repository.
+      </para>
+      <figure id="figure1"><media id="id8111041" alt="Connexions Architecture">
+  <image src="../../media/architecture.png" mime-type="image/png"/>
+  <image for="pdf" src="../../media/architecture.eps" mime-type="application/postscript"/>
+</media>
+	
+      <caption>The Connexions System</caption></figure>
+
+      <section id="sec1">
+	<title>Storing Modules: Content vs. Presentation</title>
+	<para id="para2">
+	  Due to the distributed, collaborative nature of this
+	  project, it is critical to capture the semantics of the
+	  authors' work, rather than presentation-specific syntax.
+	  This encourages authors to concern themselves with the
+	  meaning and structure of their content, rather than the
+	  notation and how it will look. Towards this end, we have
+	  adopted the eXtensible Markup Language (XML)<link target-id="ref-xml" strength="3"/> for our material in
+	  general, and specifically content MathML<link target-id="ref-mathml" strength="3"/> for mathematics. We have
+	  developed a lightweight document markup language called
+	  CNXML<link target-id="ref-cnxml" strength="3"/> for storing
+	  the basic document structure, incorporating content MathML
+	  via the XML namespace mechanism<link target-id="ref-namespaces" strength="3"/> to mark up any mathematics present in the
+	  module.
+	</para>
+	<para id="para2.5">
+	  The use of XML has several advantages.  The content may be
+	  stored in a single source format and styled for multiple
+	  output modalities: web, print, ebook, audio, or even future
+	  formats not yet defined. This flexibility is key in freeing
+	  us to devise new means of visualizing information without
+	  being concerned with compatibility with particular browsers,
+	  or designing to the lowest common denominator functionality
+	  of older browsers. Adapting our content to a new
+	  visualization capability requires developing a new
+	  stylesheet, rather than than recoding and transforming
+	  documents <foreign>en masse</foreign>.
+	</para>
+	<para id="para3">
+	  This separation of content and style also allows for a
+	  coherent presentation of materials from many authors,
+	  including mathematical notation. If multiple authors were to
+	  write modules using their own preferred mathematical
+	  notation, instructors would be constrained to assembling
+	  courses with internal notational inconsistencies. Such
+	  discontinuities are very disruptive for students, causing
+	  cognitive dissonance and dramatically slowing learning and
+	  their attainment of educational goals. By using content
+	  MathML and the XML Stylesheet Language for Transformations
+	  (XSLT)<link target-id="ref-xslt" strength="3"/>, we allow
+	  instructors to create courses with consistent notation
+	  throughout, independent of the notational preferences of the
+	  various original authors.
+	</para>
+      </section>
+      <section id="authors">
+	<title>Authors</title>
+	<para id="authoring">
+	  Connexions module authors take advantage of our web-based
+	  collaborative editing system to create, share, and maintain
+	  modules in the repository.  This system is based on
+	  Zope<link target-id="ref-zope" strength="3"/>, a web
+	  application server platform.  Using the editing system,
+	  authors form workgroups to collaborate on modules and
+	  courses, sharing ideas and swapping successive versions
+	  until they feel the content is ready to be submitted to the
+	  repository (See <link target-id="figure2" strength="1"/> .)
+	  The interface provides facilities for entering module
+	  metadata as well as for editing the text of the module
+	  itself.  It also allows authors to list related materials to
+	  be presented as auxiliary links (See <link target-id="students" strength="2">students</link> for details.)  The
+	  interface also provides a download/upload feature for the
+	  module text so those who dislike editing in a browser window
+	  may use an external editor.  Since XML is an open standard,
+	  we need not require any particular editing software, and
+	  authors may use the editor of their choice.  With XML's wide
+	  industry support, several editors have emerged.  Many of
+	  these are geared mainly toward tree-structured data entry,
+	  but some do provide a fair document markup interface
+	  (Morphon<link target-id="ref-morphon" strength="3"/>, XXE<link target-id="ref-xmlmind" strength="3"/>) These are still
+	  unacceptable for handling MathML, however, where a
+	  specialized editor is required.
+	</para>
+      <figure id="figure2">
+	<media id="id1167680495755" alt=""><image src="../../media/authorworkflow.png" mime-type="image/png"/></media>
+	<caption>Authoring Work Flow</caption>
+      </figure>
+	<para id="mathmleditors">
+	  We have explored several avenues for producing content
+	  MathML.  The text editor Emacs has an XML editing mode<link target-id="ref-psgml" strength="3"/> that many of our staff
+	  use, although we wouldn't recommend this for non-technical
+	  users.  Many mathematics manipulation packages
+	  (Mathematica<link target-id="ref-mathematica" strength="3"/>,
+	  Maple<link target-id="ref-maple" strength="3"/>, MathCAD<link target-id="ref-mathcad" strength="3"/>) provide MathML export
+	  capabilities, but often the output is only available as
+	  presentation MathML.  We have looked at two dedicated
+	  math-entry programs: WebEQ<link target-id="ref-webeq" strength="3"/> and EZMath<link target-id="ref-ezmath" strength="3"/>. WebEQ's input is more geared towards
+	  presentation, but it does attempt to generate content
+	  MathML, interpreting the the author's intent and providing
+	  some visual feedback when the meaning is unclear.  EZMath
+	  takes a novel approach, requiring input in a
+	  natural-language style instead of a using a graphical
+	  interface.  Since it retains the semantic content, it has no
+	  difficulty outputting content MathML, although it does
+	  require the user to learn a new syntax.  In addition to
+	  improved content MathML support, we would like to see two
+	  features in MathML editors.  The first is better
+	  extensibility, including support for
+	  <code>csymbol</code> tags and OpenMath<link target-id="ref-openmath" strength="3"/> definitions.  The
+	  second is better integration with other general-purpose XML
+	  editors, perhaps as a plugin.
+	</para>
+      </section>
+      <section id="instructors">
+	<title>Instructors</title>
+	<para id="coursecomposer">
+	  An instructor's role in the Connexions system is to serve as
+	  a guide for their students through the sea of modules.  They
+	  do this by using our <term>Course Composer</term> software
+	  to build touring itineraries or "coursepaths".  Instructors
+	  build up chapters and courses by combining modules written
+	  by other authors with their own material.  In addition,
+	  Course Composer lets instructors provide additional links on
+	  the modules in their course, beyond what the original
+	  authors have specified.  These "instructor-imposed" links
+	  are course-specific, and stored without modifying the
+	  original modules.  Each imposed link belongs to an
+	  instructor-specified category (such as "supplemental" or
+	  "prerequisite") and can be assigned a number from one to five
+	  indicating the strength or relatedness of the link.  These
+	  links are then presented to the students to help them
+	  understand the relationships between materials and to
+	  encourage individual exploration.  The Course Composer
+	  creates a course description file out of the imposed links
+	  along with the selected course path.  The repository stores
+	  the course description file in the Resource Description
+	  Framework (RDF)<link target-id="ref-rdf" strength="3"/> format
+	  for student access.
+	</para>
+	<para id="notation">
+	  One potential hurdle in assembling materials from different
+	  authors is mismatched notation.  Connexions solves this
+	  problem by utilizing content MathML.  The repository stores
+	  only semantic information, leaving notation and presentation
+	  specifics up to the instructor.  Instructors are allowed
+	  (and encouraged) to specify both cosmetic and notational
+	  parameters for displaying their course (eg. background
+	  color, or the use of <m:math display="inline"><m:ci type="constant">j</m:ci></m:math> vs. <m:math display="inline"><m:ci type="constant">i</m:ci></m:math> for
+	  <m:math display="inline"><m:apply><m:root/><m:cn>-1</m:cn></m:apply>
+	  </m:math>.)  Course Composer stores these choices in the
+	  course description file. They are then used to select an
+	  XSLT stylesheet (and possibly a set of passed parameters) to
+	  transform the course for display.  In this way the
+	  instructor can customize the the course to his or her taste,
+	  achieving a consistent presentation.  This is a limited
+	  implementation of the techniques described by Naylor and
+	  Watt<link target-id="ref-meta-SS" strength="3"/>.
+	</para>
+	<para id="printversion">
+	  In addition to electronic display on the web, instructors
+	  may wish to provide a printed version of the material. This
+	  can easily be done from the same source, thanks to the
+	  separation of content from presentation.  We use XSLT
+	  stylesheets to transform the RDF course description file and
+	  the course modules (stored in CNXML and content MathML) into
+	  a single file consisting of XSLFO<link target-id="ref-xslfo" strength="3"/> and presentation MathML.  This is than
+	  fed to <code>passivetex</code><link target-id="ref-passivetex" strength="3"/>, creating a PDF file that can be
+	  sent to Kinko's or a university press or printshop for
+	  printing and distribution to the students.  Documents
+	  produced this way achieve high quality mathematics layout
+	  thanks to the TeX<link target-id="ref-tex" strength="3"/>
+	  rendering engine, and can have autogenerated tables of
+	  contents and figures, as well as an index based on keywords
+	  and vocabulary terms.
+	</para>
+      </section>
+      <section id="students">
+	<title>Students</title>
+	<para id="roadmap">
+	  To access courses, students use our <term>Roadmap</term>
+	  navigational software.  The Roadmap queries the repository
+	  for a list of available courses (stored as RDF) and presents
+	  this list to the student.  The student then selects his or
+	  her course, and the roadmap downloads the corresponding
+	  course description file.  Once the file is downloaded, the
+	  Roadmap presents the student with an outline of the course
+	  (See the left hand side of <link target-id="roadmap-figure" strength="2"/>) and the set of imposed links for the
+	  current module (Right hand side of <link target-id="roadmap-figure" strength="2"/>.) The course view
+	  gives students a high-level view of the course materials,
+	  allowing them to track their progress.  The link view lets
+	  them explore relationships and experience how the materials
+	  are related.  Students may also choose to gain a different
+	  perspective by switching link views from the
+	  instructor-imposed links to the auxiliary links provided by
+	  the module authors.  The Roadmap is currently implemented as
+	  a browser add-on using Netscape's eXtensible User-Interface
+	  Language (XUL)<link target-id="ref-xul" strength="3"/> and is
+	  only available for Netscape 6 or the Mozilla browser.  We
+	  are working on a similar plugin for Microsoft's Internet
+	  Explorer, but in the meantime the system falls back to
+	  generating HTML webpages that achieve a similar effect using
+	  frames.
+	</para>
+	<figure id="roadmap-figure">
+	  <media id="id2507986" alt=""><image src="../../media/roadmap.png" mime-type="image/png"/></media>
+	  <caption>The Connexions Roadmap</caption>
+	</figure>
+	<para id="module_viewing">
+	  With or without the Roadmap, when a student retrieves a
+	  module for viewing, XSLT stylesheets transform the
+	  content-based XML (CNXML and content MathML) into
+	  appropriate presentation dialects (XHTML and Presentation
+	  MathML.)  The particular stylesheets used are determined by
+	  the Connexions server, based on the student's specific
+	  browser and the parameters specified by the course
+	  instructor (if the student is accessing the module as part
+	  of a course.)  In this way students see the series of
+	  modules as a stylistically coherent text using their
+	  instructor's preferred notation.  These transformations are
+	  largely done server-side, although we are investigating the
+	  use of client-side transformations for the future.  A
+	  notable exception to this is our client-side use of the
+	  MathML stylesheet provided by the W3C MathML working
+	  group<link target-id="ref-mathss" strength="3"/>, enabling the
+	  same source to be used by different rendering environments.
+	  This allows the same module to be viewed by browsers with a
+	  wide range of functionality.  We currently support Mozilla
+	  with built-in MathML support and Internet Explorer 6 with
+	  Design Science's MathPlayer plugin<link target-id="ref-mathplayer" strength="3"/> (Internet Explorer
+	  5.5 is also supported with an upgrade to to version 3 or
+	  greater of Microsoft's MSXML parser.)  In the future we hope
+	  to support other browsers by providing a transformation to
+	  bare-bones HTML with images for the math.
+	</para>
+      </section>
+    </section>
+    <section id="futurework">
+      <title>Future Directions</title>
+      <para id="cmaps">
+	For future research, we are investigating novel methods of
+	content creation that more directly capture experts' knowledge
+	than traditional, linearly-structured papers (such as this
+	one.) One such approach to collaborative, web-based authoring
+	that tends to generate highly interconnected content is the
+	Wiki<link target-id="ref-wiki" strength="3"/>. We are
+	investigating conversion tools to enable the use of Wikis as
+	outlining and rough-draft tools to generate interlinked
+	Connexions modules.  Another approach we are investigating is
+	the <term>concept map</term><link target-id="ref-cmaps-rev" strength="3"/> <link target-id="ref-cmaps" strength="2"/> both as
+	an assessment tool, and for creating courses.  Instructors
+	could create a graphical "map" of the material and its
+	relationships, which would then be converted into a course
+	description file.
+      </para>
+      <para id="graphnav">
+	Similarly, on the client side we would like to develop a more
+	visually-oriented Roadmap tool, by representing modules and
+	links graphically.  This would truly allow students to see the
+	relationships between concepts as they navigate the
+	interlinking web of modules.
+      </para>
+      <para id="wizards">
+	Since most other document formats are not as semantically
+	driven as CNXML, auto-conversion from, for example, Microsoft
+	Word documents or PowerPoint presentations is not possible.
+	However, the creation of "wizards" that guide an author
+	through the process of adding semantic information while
+	converting markup is certainly possible, and is an avenue we
+	are interested in pursuing.
+      </para>
+      <para id="annotate">
+	The W3C's Annotea<link target-id="ref-annotea" strength="3"/>
+	project provides a method of annotating web pages without
+	having to modify the source.  Instead, the annotations are
+	stored on an annotation server using RDF and XPointer<link target-id="ref-xpointer" strength="3"/> .  We plan to
+	incorporate this technology into our software as well,
+	allowing instructors to add their own comments onto course
+	modules.  This could be used, for example to call attention to
+	important concepts or refer back to points made in class
+	lectures.  It could also be useful for enabling students to
+	create personal "margin notes" while they are reading the
+	materials.
+      </para>
+      <para id="distrep">
+	Widespread adoption of the Connexions system will require
+	expansion beyond a single, central repository. We are
+	investigating the technologies required to support different
+	levels of distributed repositories, ranging from closely
+	cooperating, federated repositories to independent access of
+	multiple repositories whose only commonality is standards
+	compliance and a common toolset.
+      </para>
+      <para id="lensing">
+	As the size and richness of the content pool increases, the
+	need for more advanced searching and discriminating tools will
+	become critical.  We are addressing this problem in two ways.
+	Our first approach incorporates the use of external metadata
+	stores, and advanced indexing technologies. The second
+	approach is perhaps more interesting from a community point of
+	view. We are investigating the requirements to support
+	third-party "lenses", which will focus a user's view of the
+	repository on selected content. These could serve as content
+	guides for instructors and authors, much in the way courses
+	guide students.
+      </para>
+    </section>
+    <section id="conclusion">
+      <title>Conclusion</title>
+      <para id="para8">
+        Connexions would not have been possible without the
+        development and maturation of XML and related technologies
+        such as MathML and XSLT that fulfill the promise of separation
+        of content and presentation.  This separation, combined with a
+        sufficiently fine-grained modularization allows authors to
+        create easily-maintainable and shareable content.  Publication
+        and exchange of this content through an open repository
+        enables instructors to pull together disparate components to
+        create customized courses with a coherent mathematical
+        notation. We are currently working with education assessment
+        professionals to determine the effectiveness of this approach
+        from the student perspective. Our experience to date using
+        Connexions has taught us that both students and faculty
+        appreciate the availability of high-quality materials in both
+        web and print formats.  We expect to gain widespread adoption
+        of our tools and approach as we expand the content pool
+        and incorporate new technologies.
+      </para>
+    </section>
+    <section id="references">
+      <title>References</title>
+      <list id="ref-list" list-type="enumerated">
+	<item id="ref-annotea">
+	  <link url="http://www.w3.org/2001/Annotea/">Annotea
+	  Project</link>, World Wide Web Consortium
+	</item>
+	<item id="ref-cmaps-rev">
+	  "Assessing Science Understanding: A Human Constructivist
+	  View". Mintzes, J.J., Wandersee, J.H. &amp; Novak,
+	  J.D. (2000) San Diego: Academic Press
+        </item>
+	<item id="ref-cnxml">
+	  <link url="http://cnx.rice.edu/cnxml/0.4/spec/">CNXML 0.4
+	    Language Specification</link>, Coppin, S., <emphasis>et
+	    al.</emphasis>, 12 March. 2002
+	</item>
+	<item id="ref-cvs">
+	  <link url="http://www.cvshome.org">Concurrent Versions
+	    System (CVS)</link>, SourceGear Corporation
+	</item>
+	<item id="ref-thesis">
+	  "Connexions: An Architecture for Web-based Educational
+	  Materials", Brent Hendricks, MS Thesis, Rice University,
+	  Jan. 2001
+	</item>
+	<item id="ref-xml">
+	  <link url="http://www.w3.org/TR/2000/REC-xml-20001006">Extensible
+	    Markup Language (XML) 1.0 (Second Edition)</link>, Bray,
+	    T.,<emphasis>et al.</emphasis>, 6 Dec. 2000
+	</item>
+	<item id="ref-xslfo">
+	  <link url="http://www.w3.org/TR/2001/REC-xsl-20011015/">Extensible
+	    Stylesheet Language (XSL) Version 1.0</link>, Adler,
+	    S. <emphasis> et al.</emphasis> 15 October 2001
+	</item>
+	<item id="ref-cmaps">
+	  "Learning How to Learn". Novak, J.D. and Gowin, D. B. (1984). New York and Cambridge, UK: Cambridge University Press
+        </item>
+	<item id="ref-mathcad">
+	  <link url="http://www.mathsoft.com">MathCAD</link>, MathSoft Engineering and Education
+	</item>
+	<item id="ref-mathematica">
+	  <link url="http://www.wolfram.com/products/mathematica/">Mathematica</link>, 
+	  Wolfram Research, Inc.
+	</item>
+	<item id="ref-mathml">
+	  <link url="http://www.w3.org/TR/2000/CR-MathML2-20001113">Mathematical
+	    Markup Language (MathML) Version 2.0</link>, Ausbrooks,
+	    R. <emphasis>et al.</emphasis>, 13 Nov. 2000
+	</item>
+	<item id="ref-ezmath">
+	  <link url="http://www.w3.org/People/Raggett/EzMath/EzMathPaper.html">Mathematics
+	  on the Web: The EzMath notation</link>, Ragget, D. and
+	  Batsalle, Davy 27 Nov. 1997
+	</item>
+	<item id="ref-mathplayer">
+	  <link url="http://www.dessci.com/webmath/mathplayer/">MathPlayer</link>,
+	  Design Sciences
+	</item>
+	<item id="ref-meta-SS">
+	  <link url="http://www.risc.uni-linz.ac.at/institute/conferences/MKM2001/Proceedings/naylor.pdf">Meta
+	  Style Sheets for the Conversion of Mathematical Documents
+	  into Multiple Forms</link>, Naylor, B. and Stephen Watt, S.,
+	  (2001) First International Workshop on Mathematical
+	  Knowledge Management: MKM'2001 RISC, Hagenberg
+	</item>
+	<item id="ref-morphon">
+	  <link url="http://www.morphon.com/xmleditor/index.shtml">Morphon
+	    XML-Editor Suite</link>, Morphon Technologies
+	</item>
+	<item id="ref-namespaces">
+	  <link url="http://www.w3.org/TR/1999/REC-xml-names-19990114">Namespaces
+	    in XML</link>, Bray, T. <emphasis>et al.</emphasis> 14
+	    Jan. 1999
+	</item>
+	<item id="ref-openmath">
+	  <link url="http://www.openmath.org/">The OpenMath Standard
+	  (Draft)</link>, The ESPRIT OpenMath Project, Numerical
+	  Algorithms Group, Ltd. Oxford, UK
+	</item>
+	<item id="ref-passivetex">
+	  <link url="http://www.hcu.ox.ac.uk/TEI/Software/passivetex/">PassiveTeX</link>, Rahtz, S. Feb 2002
+	</item>
+	<item id="ref-postgresql">
+	  <link url="http://www.postgresql.org">PostgreSQL Data Base
+	    Management System</link>, The PostgreSQL Global
+	    Developement Group
+	</item>
+	<item id="ref-psgml">
+	  <link url="http://www.lysator.liu.se/projects/about_psgml.html/">
+	    PSGML: A GNU Emacs mode for SGML files</link>, Staflin, L.
+	</item>
+	<item id="ref-mathss">
+	  <link url="http://www.w3.org/Math/XSL/">Putting mathematics on
+	    the Web with MathML</link>, The W3C Math Working Group,  Mar. 2002
+	</item>
+	<item id="ref-rdf">
+	  <link url="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222">Resource
+	    Description Framework (RDF) Model and Syntax
+	    Specification</link>, Lassila, O. and Swick, R. 22
+	    Feb. 1999
+	</item>
+	<item id="ref-tex">
+	  The TeXbook, Knuth, D. Addison-Wesley Publishing Co. Jun. 1986
+	</item>
+	<item id="ref-maple">
+	  <link url="http://www.maplesoft.com">Waterloo Maple</link>, Waterloo Maple Software
+	</item>
+	<item id="ref-webeq">
+	  <link url="http://www.dessci.com/">WebEQ Developer's Suite</link>, Design Science Incorporated
+	</item>
+	<item id="ref-wiki">
+	  <link url="http://c2.com/cgi-bin/wiki?WikiWikiWeb">Wiki Wiki
+	    Web</link>, Cunningham, W.
+	</item>
+	<item id="ref-xpointer">
+	  <link url="http://www.w3.org/XML/Linking/">XML Pointer
+	    Language (XPointer) Version 1.0</link>, DeRose,
+	  S. <emphasis>et al.</emphasis> 11 Sep. 2001
+	</item>
+	<item id="ref-xmlmind">
+	  <link url="http://www.xmlmind.com/xmleditor/">XMLMind XML
+	  Editor (XXE)</link>, Pixware
+	</item>
+	<item id="ref-xslt">
+	  <link url="http://www.w3.org/TR/1999/REC-xslt-19991116">XSL
+	    Transformations (XSLT) Version 1.0</link>, Clark, J., 16
+	    Nov. 1999
+	</item>
+	<item id="ref-xul">
+	  <link url="http://www.mozilla.org/xpfe/xulref/">XUL
+	    Programmer's Reference Manual</link>, The Mozilla Project
+	</item>
+	<item id="ref-zope">
+	  <link url="http://www.zope.com">Zope</link>, Zope
+	  Corporation
+	</item>
+      </list>
+    </section>
+  </content>
+
+</document>
